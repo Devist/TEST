@@ -1,0 +1,148 @@
+.segment-edit {
+  border: 1px solid #626b7b;
+  //max-height: 80vh;
+  .sg-sidebar {
+    border-right: 1px solid #626b7b;
+    width:20%;
+    min-width: 306px;
+
+    .select-filters {
+      padding: 1rem 0.5rem;
+
+      .custom-checkbox .custom-control-label, .custom-radio .custom-control-label {
+        font-size: 12px;
+      }
+
+      .select__menu {
+        z-index:2;
+      }
+    }
+
+    .select__multi-value {
+      margin: 0.2rem 0.7rem 0 0;
+    }
+
+    .sg-resource {
+      background: rgba(186,188,199,0.12);
+
+    }
+    .sg-list {
+      background: rgba(186,188,199,0.12);
+      padding: 0 0.5rem 0.5rem 0.5rem;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      overscroll-behavior-y: none;
+      height: 55.5vh;
+      ul {
+        list-style: none; /* Remove default bullets */
+
+        li {
+          display: flex;
+          align-items: center;
+          color: #82868B;
+        }
+      }
+
+      ul .li-game-color::before {
+        content: "\2022\00a0"; /* Add content: \2022 is the CSS Code/unicode for a bullet */
+        color: #00CFE8; /* Change the color */
+        font-weight: bold; /* If you want it to be bold */
+        font-size:x-large;
+        margin-left: -1em;
+      }
+
+      ul .li-personalized-color::before {
+        content: "\2022\00a0"; /* Add content: \2022 is the CSS Code/unicode for a bullet */
+        color: #EA5455; /* Change the color */
+        font-weight: bold; /* If you want it to be bold */
+        font-size:x-large;
+        margin-left: -1em;
+      }
+    }
+  }
+
+  .sg-labels-area {
+    width:80% !important;
+    padding: 1rem;
+    background: #EBE9F1;
+    max-height: 71vh;
+
+
+    .sg-label-configuration-area{
+      overflow-x: hidden;
+      overflow-y: scroll;
+      max-height: 67.4vh;
+      overscroll-behavior-y: none;
+    }
+
+    .sg-condition-box {
+      background: white;
+
+      border-radius: 12px;
+      border:dashed 1px black;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+
+      .sg-summary-and-header {
+        margin: 0.5rem 1rem;
+      }
+      .sg-context {
+        background: #E2E2E2;
+        width: fit-content;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        color: #5E5873 !important;
+        font-weight: bolder;
+        margin-right:0.2rem;
+      }
+    }
+
+    .sg-and-box {
+      width:100%;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      background: #F4F4F4;
+      padding: 1rem;
+      border:1px solid #4b4b4b !important
+    }
+
+    .sg-drag-state {
+      opacity: 0.5;
+    }
+  }
+
+
+  .sg-filter-list{
+    margin-top:2.5rem;
+
+    .sg-label-card {
+      background: white;
+      margin: 0.5rem 0;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border:dashed 1px #000000;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  .criteria-select{
+    .select__control .select__single-value, .react-select__control .select__single-value {
+      color: #6e6b7b;
+      font-size:10px;
+    }
+  }
+
+  .include-switch{
+    .custom-switch .custom-control-input:checked ~ .custom-control-label::before {
+      width: 60px;
+    }
+    .custom-switch .custom-control-input:checked ~ .custom-control-label::after {
+      transform: translateX(2.7rem);
+    }
+    .custom-switch .custom-control-label::before {
+      width: 60px;
+    }
+    .custom-switch .custom-control-label .switch-icon-right {
+      right: -6px;
+    }
+  }
+}
+

@@ -1,0 +1,93 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+import DockerSetting from '../images/guide-develop/docker-desktop.png'
+
+import IntellijProjects from '../images/guide-develop/intellij-projects.png'
+
+import IntellijPlugins from '../images/guide-develop/intellij-plugins.png'
+
+import AdaptPrettier from '../images/guide-develop/adapt-prettier.png'
+
+import IntelliJStep3 from '../images/setting-step3.png'
+
+import IntelliJStep4 from '../images/guide-develop/intellij-run_debug_config.png'
+
+<Meta title="for 운영자 /🧐 2.0 개발 가이드/세팅" />
+
+# 세팅
+
+> 오동환 - 초안 작성 / 2021. 05.24
+
+---
+
+- 도커 데스크탑 설정
+- Intelli J 설정
+
+## A. 도커 데스크탑 설정
+
+유저정보허브 서비스들을 로컬 환경에서 실행하기 위해서는 redis 및 zookeeper를 설치, 실행해야 합니다.
+
+<img src={DockerSetting} alt="docker-setting" />
+<br />
+<br />
+
+#### zookeeper (2181 포트 사용)
+
+서비스들의 상태 체크 및 멀티 클러스터 상태에서 여러 개의 같은 서비스들 간의 동기화를 위하여 사용되며,<br/>
+또한 서비스의 재배포 없이 설정을 변경하기 위한 용도로도 사용됩니다. (okta, nais, history 메뉴 interval day 등)
+
+```
+docker run -d --name zookeeper -p 2181:2181 zookeeper --re
+```
+[Trouble Shooting] --re 옵션으로 인해 바로 exit되는 경우 아래 구문으로 실행합니다.
+```
+docker run -d --name zookeeper -p 2181:2181 zookeeper
+```
+
+#### redis (6379 포트 사용)
+
+admin과 dashboard를 로컬에서 실행하기 위해서는 redis가 실행되어 있어야 합니다.<br/>
+admin과 dashboard 두 서비스는 나머지 서비스와 다르게 session repository를 사용하는데,<br/>
+이 때, 세션에 대한 정보를 redis에 저장하기 때문입니다.
+
+```
+docker run -d --name redis -p 6379:6379 redis --restart=always
+```
+[Trouble Shooting] --restart 옵션으로 인해 바로 exit되는 경우 아래 구문으로 실행합니다.
+```
+docker run -d --name redis -p 6379:6379 redis
+```
+
+## B. Intelli J 설정
+
+<br /> <br />
+
+### step 1. 프로젝트 구성
+
+아래 이미지와 같이 source repository 에서 프로젝트를 가져와 import 하여 구성합니다.
+
+<img src={IntellijProjects} alt="intellij-projects" />
+
+### step 2. 필수 플러그인 설치
+
+아래 이미지에서 빨간색 box로 강조된 플러그인들을 설치합니다.
+
+<img src={IntellijPlugins} alt="intellij-plugins" />
+
+- .env files support
+- EnvFile(2021.09.02 기준 intellij 설치 불가)
+- Kite
+- MDX
+- Prettier (코드 저장시 자동 lint 적용) <img src={AdaptPrettier} alt="adapt-prettier"/>
+
+### step 3. Pjoject SDK 설정
+
+JDK 11.0.2 를 Project Structure > Project SDK에 추가합니다.
+
+<img src={IntelliJStep3} alt="intellij-step3" />
+
+### step 4. Run(실행) 설정
+각각의 프로젝트는 src>main>java>com.netmarble.com>Application.java를 실행하여 실행할 수 있으며, 각각에 맞는 권한을 가진 서비스 계정을 GOOGLE_APPLICATION_CREDENTIALS 을 환경 변수에 입력해주어야 실행이 가능합니다.
+
+이를 위해 소스 레파지토리에서 클론한 프로젝트 각각에 대해서, intellij run 환경을 구성해줍니다.
+<img src={IntelliJStep4} alt="intellij-step4" />

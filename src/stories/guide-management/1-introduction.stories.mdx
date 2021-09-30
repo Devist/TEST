@@ -1,0 +1,35 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+import Direction from '../images/guide-develop/folder.png'
+
+<Meta title="for 운영자 /😿 1.0 운영 가이드/소개" />
+
+# 소개
+
+> 홍승한 - 초안 작성 / 2021. 05.25
+
+---
+
+유저정보허브는 사내 [고객 데이터 플랫폼 (Customer Data Platform)](http://www.openads.co.kr/content/contentDetail?contsId=4018) 서비스입니다.
+
+사용 유저는 넷마블 사업부 혹은 넷마블 마케팅 부서입니다. (후에 코웨이 쪽으로 확장 가능성이 있습니다.)
+1. 사업부는 게임 아이디(PID)를 사용하여 자신의 게임에 특정 고객 층을 타게팅 하기 위하여 유저정보허브를 사용합니다.
+2. 마케팅 부서는 광고 아이디(ADID)를 사용하며 유입 혹은 복귀를 위한 유저를 타게팅 하기 위하여 유저정보허브를 사용합니다.
+
+<br/>
+
+유저정보허브는 관리를 위한 [운영 콘솔(Admin)](https://columbus.netmarble.com/admin) 과 유저들이 사용하는 [콘솔(Dashboard)](https://columbus.netmarble.com/dashboard) 로 나누어져있습니다.
+
+또한 유저정보허브는 현재 여러 개의 존으로 나누어져 있습니다.
+1. 사업부 및 마케팅 부서가 사용하고 있는 Prod (a.k.a 실계)
+    * https://columbus.netmarble.com/dashboard 과 같이 columbus로 시작되는 url을 가지고 있습니다.
+2. QA 들이 사용하고 있는 Dev (a.k.a Dev 존)
+    * https://dev-columbus.netmarble.com/dashboard 과 같이 dev-columbus로 시작되는 url을 가지고 있습니다.
+3. 개발을 테스트하기 위한 용도로 사용하고 있는 Improve
+    * https://perf-columbus.netmarble.com/dashboard 과 같이 perf-columbus로 시작되는 url을 가지고 있습니다.
+    * 기존에는 성능 테스트를 위한 존이었으나 성능 테스트를 마치고 개발을 위한 존으로 사용중이다.
+
+<br/>
+
+### 전체 아키텍쳐 및 그림 설명
+([문서1](https://docs.google.com/presentation/d/19EFKiLaBnAMedIyJrijjBCcwP9rz_JQHISKIUDg2QRQ/edit#slide=id.g5f48b5fb41_0_18),[문서2](https://docs.google.com/presentation/d/1tmRIV-chRZhb8iYwJDvtjPaVqFr8RdB2tMUPnyFyTco/edit#slide=id.g47f79a8d72_0_61))

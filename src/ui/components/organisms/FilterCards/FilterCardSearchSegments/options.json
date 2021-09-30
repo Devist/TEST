@@ -1,0 +1,14 @@
+{
+  "initIdTypeOption": { "value": "all", "label": "모든 ID 타입" },
+  "initManagerOption": { "value": "all", "label": "모든 담당자" },
+  "initGameOption": { "value": "all", "label": "모든 게임" },
+  "idTypeOptions": [
+    { "value": "all", "label": "모든 ID 타입" },
+    { "value": "pid", "label": "PID" },
+    { "value": "adid", "label": "ADID" }
+  ],
+  "managerOptions": [
+    { "value": "my", "label": "내 담당" },
+    { "value": "all", "label": "모든 담당자" }
+  ]
+}

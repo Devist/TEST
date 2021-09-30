@@ -1,0 +1,7 @@
+{
+  "initTemplateOption": { "value": "adid", "label": "ADID (마케팅)" },
+  "templateOptions": [
+    { "value": "adid", "label": "ADID (마케팅)" },
+    { "value": "pid", "label": "PID" }
+  ]
+}

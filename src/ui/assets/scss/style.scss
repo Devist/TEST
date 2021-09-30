@@ -1,0 +1,130 @@
+/*================================================================================
+	Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
+	Version: 2.0
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+================================================================================
+
+NOTE:
+------
+PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
+WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+@import '../../../../node_modules/prismjs/themes/prism-tomorrow';
+@import './segment-edit.scss';
+
+code[class*='language-'],
+pre[class*='language-'] {
+  text-shadow: none !important;
+}
+
+.language-jsx,
+pre[class*='language-'] {
+  color: white !important;
+  font-weight: 700;
+}
+
+// 추가 설정
+.mr-little {
+  margin-right:0.5rem
+}
+
+.mt-little {
+  margin-top:0.5rem
+}
+
+
+.mb-little {
+  margin-bottom:0.7rem
+}
+
+.p-little {
+  padding:0.3rem 0.5rem
+}
+
+.py-little{
+  padding-top:0.5rem;
+  padding-bottom:0.5rem;
+}
+
+.m-little {
+  margin: 0.3rem 0.1rem
+}
+
+.mx-little {
+  margin: 0 0.3rem
+}
+
+.w-fit {
+  width:fit-content;
+}
+
+.bg-disabled {
+  background-color:#EFEFEF;
+}
+
+// 에디터 스타일
+.ProseMirror {
+  min-height:180px;
+  border: 1px solid;
+  padding: 1rem;
+}
+
+// 페이지네이션 스타일
+.pagination-wrapper {
+  overflow-x:auto;
+}
+
+.pagination {
+  justify-content: left;
+  margin:30px;
+}
+
+// 레이블 상세보기 스타일
+.display-box {
+  border: 0.5px solid #D8D6DE;
+  padding:1rem;
+}
+.listTitle {
+  min-height: 35px;
+}
+.label-info-small-box {
+  height: 110px;
+  overflow-y: scroll;
+}
+.label-info-big-box {
+  height: 400px;
+  overflow-y: scroll;
+}
+// 레이블 상세보기 그래프
+.apexcharts-datalabel {
+  //font-size: 14px !important;
+}
+.apexcharts-yaxis-label {
+  white-space: pre-line;
+  word-break: break-word;
+}
+
+// 세그먼트 상세보기 스타일
+.segment-info-small-box {
+  height: 110px;
+  overflow-y: scroll;
+}
+.segment-info-big-box {
+  height: 400px;
+  overflow-y: scroll;
+}
+
+
+// 세그먼트 생성
+.condition-box {
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, .25);
+  padding:0 0.3rem;
+  border: 0.5px solid #B9B9C3;
+  display: flex;
+  width:fit-content;
+}
+
+.or-divider{
+  height:fit-content;
+}

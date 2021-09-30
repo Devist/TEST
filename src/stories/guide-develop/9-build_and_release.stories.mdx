@@ -1,0 +1,43 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="for 운영자 /🧐 2.0 개발 가이드/빌드 및 배포" />
+
+# 빌드 및 배포
+
+> 홍승한 - 초안 작성 / 2021. 05.26
+
+---
+
+유저정보허브를 빌드 및 배포는 존에 따라서 다른 방식으로 진행합니다.
+
+1. 실계 (Prod 존)
+2. Dev존 및 개발계 (개발존 혹은 improve존 혹은 perf존)
+
+<br />
+
+## 실계 빌드 및 배포 방법
+
+실계의 빌드 및 배포는 Spinnaker를 사용한다.
+
+https://spinnaker-clbs.nmn.io/ 에서 유저정보허브 실계의 빌드 및 배포를 할 수 있으며, 자세한 내용은 아직 공유받지 못했다.
+
+현재 담당자는 이삭님이다.
+
+## Dev존 및 개발계 빌드 및 배포 방법
+
+Dev존과 improve존은 둘 다 skaffold를 사용하여 비슷한 방식으로 배포가 가능하다.
+
+skaffold.yaml 파일이 프로젝트 root 디렉토리에 존재하며 빌드 및 배포의 설정은 해당 파일에서 관리한다.
+
+빌드 및 배포 방식은 매우 간단하다.
+
+1.  빌드 및 배포하고자 하는 프로젝트 디렉토리에 접속
+2.  (대시보드의 경우) DASHBOARD_IMG_TAG_BUILD 와 DASHBOARD_IMG_TAG_DEPLOY 환경 변수를 입력한다.<br/>
+    (ADMIN이면 ADMIN_IMG_TAG_BUILD, ADMIN_IMG_TAG_DEPLOY)<br/>
+    버전은 unique하면 되기 때문에 v해당날짜-배포횟수 를 사용하며 유의할 점은 Deploy의 경우 버전 양 옆으로 "를 붙여야한다.
+
+        export DASHBOARD_IMG_TAG_BUILD=v20210512-1
+        export DASHBOARD_IMG_TAG_DEPLOY="v20210512-1%100"
+
+3.  Improve 존은 skaffold run -f skaffold.yaml -p improve-build 로 빌드한다. (Dev 존은 skaffold run -f skaffold.yaml -p dev-build)
+4.  빌드가 끝나면 Improve 존은 skaffold run -f skaffold.yaml -p improve-deploy 로 배포한다. (Dev 존은 skaffold run -f skaffold.yaml -p dev-deploy)

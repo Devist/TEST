@@ -1,0 +1,103 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+import Install1 from '../images/install-1.png'
+
+<Meta title="for 운영자 /🧐 2.0 개발 가이드/설치" />
+
+# 설치
+
+> 오동환 - 초안 작성 / 2021. 05.25
+> 오동환 - reacttime 추가 / 2021. 06.11
+
+---
+
+로컬에서 개발하기 위해 다음을 설치 또는 다운로드 해야 합니다.
+
+## A. Tools
+
+- [도커 데스크탑(Docker Desktop)](https://www.docker.com/products/docker-desktop)
+- [Intelli J Ultimate 버전](https://www.jetbrains.com/ko-kr/idea/download/#section=mac)
+- JDK 11.0.2
+
+<br/>
+
+## B. 소스코드
+프론트엔드 개발은 ADMIN, DASHBOARD 레파지토리 안의 코드로 진행되지만, 실행을 위해서는 아래의 레파지토리들이 모두 필요합니다. (**Google Cloud SDK 로 클론**)
+
+#### 1. Admin(FE), [columbus-admin-webapp](https://source.cloud.google.com/columbus-160105/columbus-userdata-hub/columbus-admin-webapp)
+유저정보허브의 운영을 위한 Admin 웹서비스 (운영콘솔, https://columbus.netmarble.com/admin/, [문서 폴더](https://drive.google.com/drive/u/0/folders/1vYxD95GiNE7kR8K4hUI0UEsytFcpXEvl))
+  - 기능 : 레이블 관리, 세그먼트 조회, 데이터 API 관리, 권한, 키워드 설정
+#### 2. Dashboard(FE), [columbus-dashboard-webapp](https://source.cloud.google.com/columbus-160105/columbus-userdata-hub/columbus-dashboard-webapp)
+사용자가 실제 이용하게 되는  유저정보허브 서비스 (콘솔, https://dev-columbus.netmarble.com/dashboard/, [문서 폴더](https://drive.google.com/drive/u/0/folders/16mNEyct1rA7CUxEkwwk25CY2gNG2QXii))
+  - 기능 : 세그먼트, 스케쥴 관리, 레이블, 프로필 조회
+#### 3. Mgmt, [columbus-mgmt-api-webapp](https://source.cloud.google.com/columbus-160105/columbus-userdata-hub/columbus-mgmt-api-webapp)
+프론트엔드인 Admin, Dashboard 의 메타 관리 뿐만 아니라 백엔드 쪽의 전반적인 메타도 모두 관리하고 있는 유저정보허브의 중심 서비스
+([MGMT 문서 폴더](https://drive.google.com/drive/u/0/folders/1xHy8Ux-omlrLxq-8vcJvyTDTBU-i4av5)) ([MGMT API](https://docs.google.com/spreadsheets/d/1qukna_DxWI8vP4wjY3Y5FpgB48rMsldCksOHG4KzdhA/edit?pli=1#gid=1847230061))
+
+#### 4. Trigger, [columbus-trigger-webapp](https://source.cloud.google.com/columbus-160105/columbus-userdata-hub/columbus-trigger-webapp)
+Dashboard 의 세그먼트, 스케쥴, 추정치, 적재 정보를 사용하기 위하여 실행되어야 하는 API ([TRIGGER API](https://docs.google.com/spreadsheets/d/1ygdGZH0rwlZwpZSqnLYby3OPsCGJBFdMlZD0-J7l9Xw/edit#gid=926330532))
+- 기능
+  1. 세그먼트, 추정치, 스케쥴이 실행되었을 때, 해당 결과를 돌려주거나 메일링하는 기능
+  2. 매일 레이블이 적재되었을 때, 적재 정보를 만드는 기능
+  3. 매일 레이블이 적재되었을 때, 해당 레이블에 연결된 프로필을 만드는 기능
+
+#### 5. Data-api, [columbus-data-api-webapp](https://source.cloud.google.com/columbus-160105/columbus-userdata-hub/columbus-data-api-webapp)
+유저들이 프로필 api에 접근하기 위한 api ([디자인](https://docs.google.com/document/d/1Qr5-dc6poNH98vFn4bx0yT27Yc_b3CpTfRAeirPbH8w/edit#heading=h.xf5i7qzc5w8c)) ([요청/응답](https://docs.google.com/spreadsheets/d/136al_mloB6K2xA3O5agzNxddv0FW3DFK9aqwqM6ahhA/edit#gid=203281743))
+
+보안, 유저 검증 등을 위한 서비스
+
+#### 6. Common-lib, [common-lib](https://source.cloud.google.com/columbus-160105/columbus-userdata-hub/common-lib)
+실행되지는 않으나 다른 모든 api를 실행하기 위해서 필요한 프로젝트. DTO, 메트릭 등에 대한 정보를 담고있다.
+
+#### 7. User Profile, [columbus-user-profile-webapp](https://source.cloud.google.com/columbus-160105/columbus-userdata-hub/columbus-user-profile-webapp)
+유저 프로필에 관한 로직을 담당하는 api (수정 제외)
+
+#### 8. Profile Editor, [profile-editor](https://source.cloud.google.com/columbus-160105/columbus-userdata-hub/profile-editor)
+유저 프로필을 수정하기 위한 api. user-profile, data api와 dependency가 없다.
+
+<br />
+
+## C. 사용자 계정 파일
+
+
+#### Step1. 사용자 계정 파일이 위치한 cloud storage 로 이동
+
+GCP > 'columbus' 프로젝트 > Cloud Storage : columbus/credentials/nm-prod-global-userdata-hub
+
+[바로가기>](https://console.cloud.google.com/storage/browser/columbus/credentials/nm-prod-global-userdata-hub?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&project=columbus-160105&prefix=&forceOnObjectsSortingFiltering=false)
+
+#### Step2. 파일 다운로드
+
+다운로드시 편의를 위해 파일명에서 @ 뒤 지움
+
+- admin-api.json
+- dashboard-api.json
+- data-api.json
+- mgmt-api.json
+- profile-api.json
+- trigger-api.json
+
+#### Step3. 관리를 위해 credentials 폴더 만든 후 해당 폴더 내로 위의 파일을 옮김
+
+✋ 소스코드와 credentials 폴더는 관리를 위해 한 곳에 두세요.
+
+✋ 저 같은 경우, A라는 폴더에 git 프로젝트와, credentials 폴더를 모아두었습니다.
+
+<img src={Install1} alt="install-1" />
+
+<br />
+<br />
+
+## D. 기타 유용한 프로그램
+
+<br />
+<br />
+
+### chrome 확장 프로그램
+
+- Just Color Picker
+- MobX Developer Tools
+- React Developer Tools
+- Vue.js devtools
+- Lighthouse
+- [Reacttime](https://medium.com/swlh/3-ways-to-analyze-react-performance-with-reactime-64f6cbbf330d)

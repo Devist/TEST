@@ -1,0 +1,201 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+import image0 from '../images/guide-management/어드민-레이블관리.png'
+import image1 from '../images/guide-management/어드민_레이블생성요청.png'
+import image2 from '../images/guide-management/어드민-레이블외부요청.png'
+import image3 from '../images/guide-management/어드민-프로필관리1.png'
+import image4 from '../images/guide-management/어드민-프로필관리2.png'
+import image5 from '../images/guide-management/어드민-프로필조회.png'
+import image6 from '../images/guide-management/어드민-프로필노출순서.png'
+import image7 from '../images/guide-management/어드민-ETL1.png'
+import image8 from '../images/guide-management/어드민-ETL2.png'
+import image9 from '../images/guide-management/어드민-세그먼트관리.png'
+import image10 from '../images/guide-management/어드민-스케쥴.png'
+import image11 from '../images/guide-management/어드민-커스텀딜리버리1.png'
+import image12 from '../images/guide-management/어드민-커스텀딜리버리2.png'
+import image13 from '../images/guide-management/어드민-세그먼트잡.png'
+import image14 from '../images/guide-management/어드민-세그먼트추정치.png'
+import image15 from '../images/guide-management/어드민-프로필클라이언트1.png'
+import image16 from '../images/guide-management/어드민-프로필클라이언트2.png'
+import image17 from '../images/guide-management/어드민-플랫폼인증.png'
+import image18 from '../images/guide-management/어드민-플랫폼인증2.png'
+import image19 from '../images/guide-management/어드민-키워드.png'
+import image20 from '../images/guide-management/어드민-권한.png'
+import image21 from '../images/guide-management/어드민-권한2.png'
+
+
+<Meta title="for 운영자 /😿 1.0 운영 가이드/1.x 어드민 페이지" />
+
+# 1.0 어드민 페이지별 기능
+
+> 오동환 - 초안 작성 / 2021. 08.09
+
+---
+
+어드민은 유저정보허브의 운영을 위한 서비스입니다.
+
+- 관련 문서 폴더 : [폴더](https://drive.google.com/drive/u/0/folders/1vYxD95GiNE7kR8K4hUI0UEsytFcpXEvl)
+
+#### 핵심 기능
+- 레이블 관리
+- 세그먼트 조회
+- 데이터 API 관리
+- 권한, 키워드 설정
+<br/>
+<br/>
+
+## A. 레이블 관리
+레이블의 CRUD 를 담당하는 페이지입니다.
+
+개인화서비스개발팀에서 운영하는 페이지이며, 레이블 유입 부서(지표서비스팀, 유저프로필개발팀, 이상유저정보팀 등)에서 레이블 생성 요청이 왔을 때 해당 레이블을 만듭니다.
+
+([레이블 입력 가이드](https://docs.google.com/document/d/1ycoW-JXHOS_FzovdNBRgcTETl-hG9vc5KMp8497eiwo/edit),
+[레이블/프로필 데이터 입력 프로세스](https://docs.google.com/document/d/1vUh3gji6ElOAJA8z2Yf4BKXp2Q45qCx9ibl9LL-W_rU/edit#heading=h.p6618izf5cuh)
+)
+<img src={image0} alt="-" />
+<br/>
+<br/>
+
+## B. 레이블 생성 요청
+타 팀(레이블을 유입하는)에서 레이블 생성을 개인화서비스개발팀에게 요청할 때 사용합니다.
+<img src={image1} alt="-" />
+<br/>
+<br/>
+
+## C. 레이블 외부 요청
+레이블 유입이 완료되었을 때 알람이 필요한 경우 레이블을 생성 시에 ‘적재 완료시 외부 알람 정보’를 입력하게 되는데,
+
+레이블 외부 요청 페이지에서는 이 외부 알람 api 를 호출하는데 사용되는 URL, 헤더, 바디, 재시도 횟수 등을 보여주는 페이지입니다.
+
+<img src={image2} alt="-" />
+<br/>
+<br/>
+
+## D. 프로필 관리
+이 곳에는 레이블에 의해서 생성된 프로필을 CRUD 할 수 있는 페이지입니다. 프로필 수정은 가능하나, 프로필 생성은 레이블 생성, 수정을 통해서만 가능합니다.
+프로필은 빅테이블로 관리되며 레이블이 적재 완료 후에 Trigger API 를 호출하여 해당 레이블 정보를 ETL(추출, 변환, 적재)하여 프로필 데이터를 적재합니다.
+<img src={image3} alt="-" />
+<img src={image4} alt="-" />
+<br/>
+<br/>
+
+## E. 프로필 조회
+프로필 조회는 프로필 ETL 을 통해 적재된 프로필 데이터들을 하나의 ID(게임 이용자)에 대하여 모아서 보기 위한 기능입니다.
+후에 프로필 데이터를 수정하는 기능도 추가되었으며, 수정하면 빅테이블에 있는 프로필 데이터가 수정됩니다.
+(조회 기능이 먼저 개발되었고 수정 기능이 뒤늦게 개발되었다. 그래서 profile-editor 프로젝트가 따로 존재한다.)
+<img src={image5} alt="-" />
+<br/>
+<br/>
+
+## F. 프로필 노출 순서
+조회시의 노출 순서를 결정할 수 있습니다.
+조회를 확인해본 결과, 순서대로 노출되지 않고 거의 사용되지 않는다고 봐도 될 것 같습니다.
+<img src={image6} alt="-" />
+<br/>
+<br/>
+
+## G. 프로필 ETL 내역
+trigger 에 의해서 레이블에서 프로필로 ETL 되었을 때, 해당 내역을 확인할 수 있는 페이지입니다.
+또한 직접 프로필 ETL 을 실행하는 잡을 만들 수 있습니다.
+
+### <u>ETL 이란</u>
+레이블에 프로필이 물려 있을때 ,레이블 적재가 완료되면 트리거가 프로필에 자동으로 옮겨준다. 이걸 ETL(데이터를 추출 변환 적재해준다는거)이라 한다.
+
+<img src={image7} alt="-" />
+<img src={image8} alt="-" />
+<br/>
+<br/>
+
+## H. 프로필 삭제 내역
+프로필 삭제 내역을 확인할 수 있는 페이지입니다.
+
+## I. 세그먼트 관리
+Dashboard 의 세그먼트 관리에서 생성된 세그먼트를 조회할 수 있는 페이지입니다.
+
+세그먼트 생성은 admin 이 아닌 dashboard 에서만 사용할 수 있습니다.
+(거의 사용되지 않습니다.)
+<img src={image9} alt="-" />
+<br/>
+<br/>
+
+## J. 세그먼트 스케쥴
+Dashboard 의 스케줄 관리에서 생성된 세그먼트를 조회할 수 있는 페이지입니다.
+(거의 사용되지 않습니다.)
+<img src={image10} alt="-" />
+<br/>
+<br/>
+
+## K. 커스텀 딜리버리 관리
+세그먼트 실행(스케줄 포함) 결과를 딜리버리 하는 종류 중에서 커스텀 딜리버리를 만들 수 있는 페이지이다.
+
+<img src={image11} alt="-" />
+<img src={image12} alt="-" />
+<br/>
+<br/>
+
+## L. 세그먼트 잡 내역
+세그먼트가 실행(스케줄 포함)된 내역을 확인할 수 있는 페이지입니다.
+<img src={image13} alt="-" />
+<br/>
+<br/>
+
+## M. 세그먼트 추정치 내역
+세그먼트 생성 중에 추정치를 사용하였을 경우, 해당 내역을 확인할 수 있는 페이지입니다.
+
+추정치는 하루치만 표시됩니다.
+
+<img src={image14} alt="-" />
+<br/>
+<br/>
+
+## N. 프로필 클라이언트 관리
+프로필 클라이언트? 프로필을 조회할 수 있는 클라이언트를 뜻합니다.
+
+프로필 조회 api 를 사용하기 위해서는 사용자 관리 목적으로 프로필 클라이언트라는 메타가 필요합니다.
+
+이 메타를 관리하는 페이지입니다.
+
+[Data API 응답/요청](https://docs.google.com/spreadsheets/d/136al_mloB6K2xA3O5agzNxddv0FW3DFK9aqwqM6ahhA/edit#gid=203281743)에서 url 에 사용되는 프로필 클라이언트입니다.
+
+각 프로필 클라이언트는 각 클라이언트에 연결된 프로필만 조회가 가능합니다.
+
+<img src={image15} alt="-" />
+<img src={image16} alt="-" />
+<br/>
+<br/>
+
+## O. 플랫폼 인증
+[Data API 응답/요청](https://docs.google.com/spreadsheets/d/136al_mloB6K2xA3O5agzNxddv0FW3DFK9aqwqM6ahhA/edit#gid=203281743)에서 JWT token 의 발급을 관리하는 페이지입니다.
+<img src={image17} alt="-" />
+<img src={image18} alt="-" />
+<br/>
+<br/>
+
+## P. 키워드 관리
+키워드 (해시태그)를 관리하는 페이지입니다.
+<img src={image19} alt="-" />
+<br/>
+<br/>
+
+## Q. 권한 관리
+콘솔(dashboard) 과 운영콘솔(admin) 의 접근 권한을 관리하는 페이지입니다.
+
+운영 콘솔의 경우 **페이지 별**로 접근 권한을 제어하며, 콘솔의 경우 **게임 별**로 권한을 제어합니다.
+
+### <u>권한 앱 종류가 Admin(운영 콘솔) 인 경우, 콘솔(dashboard)도 이용가능하며 모든 게임 권한이 부여된다.</u>
+  - 역할(관리자, admin) : 운영 콘솔의 모든 페이지를 사용할 수 있다.
+  - 역할(사용자, user) : 접근 허용 메뉴(페이지), 접근 제한 메뉴에 따라 운영 콘솔의 일부 페이지를 사용할 수 있다.
+
+<br/>
+
+### <u>권한 앱 종류가 Dashboard(콘솔)인 경우, 운영 콘솔은 이용할 수 없다.</u>
+
+  - 역할(관리자, admin) : 모든 게임 권한이 부여된다.
+  - 역할(사용자, user) : 접근 허용 게임만 권한이 부여된다.
+  - 역할(사용자, All_Games_User) : 모든 게에 관한 권한이 부여된다. (그로스 마케팅팀 > 전체 게임에 대해 마케팅 하시는 분들)
+
+<br/>
+<img src={image20} alt="-" />
+<img src={image21} alt="-" />
+<br/>
+<br/>

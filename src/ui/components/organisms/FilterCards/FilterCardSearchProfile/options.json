@@ -1,0 +1,7 @@
+{
+  "initIdTypeOption": { "value": "pid", "label": "PID" },
+  "idTypeOptions": [
+    { "value": "pid", "label": "PID" },
+    { "value": "adid", "label": "ADID" }
+  ]
+}

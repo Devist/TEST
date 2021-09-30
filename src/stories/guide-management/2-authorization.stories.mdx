@@ -1,0 +1,109 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+import ipBlocks from '../images/guide-management/ip-blocks.png'
+import bnsmasiaIpBlocks from '../images/guide-management/bnsmasia-ip-blocks.png'
+import istioIngressgatewayLog from '../images/guide-management/istio-ingressgateway-log.png'
+import platformAuthorization from '../images/guide-management/platform-authorization.png'
+import accessToken from '../images/guide-management/access-token.png'
+
+
+<Meta title="for 운영자 /😿 1.0 운영 가이드/권한 신청" />
+
+# 권한 신청
+
+> 이삭 - 초안 작성, 홍승한 - 옮김 / 2021. 05.25
+
+---
+
+유저정보허브는 다양한 방식의 접근 제어를 사용하고 있습니다. 따라서 사용자에게서 유저정보허브 접근 권한을 허용해달라는 요청이 들어오면 여러 절차가 필요합니다.
+
+유저정보허브는 다음의 두 분류의 사용자를 가집니다.
+- 마케팅 부서
+- 사업부
+
+<br/>
+
+## 마케팅팀 접근 권한 요청
+
+주로 Grow마케팅팀 박수영님을 통하여 요청이 들어오며 xx마케팅팀의 xxx에게 유저정보허브 접근 권한을 달라고 하는 요청이 들어옵니다.
+
+이 경우 다음의 절차를 따라서 접근 권한을 줄 수 있습니다.
+
+1. Okta 접근 부여
+    * https://sso.nmn.io 접속
+    * 관리자 버튼 클릭
+    * 좌측의 Application 탭 클릭 -> Applications 메뉴 선택
+    * gcp-okta-dashboard 어플리케이션 선택 (prod의 경우)
+    * Assign 버튼 클릭 -> Assign to People 클릭
+    * 이름 혹은 이메일 주소로 검색하여 Assign
+2. Admin에서 유저에 대한 권한 부여
+    * https://columbus.netmarble.com/admin 접속 (prod의 경우)
+    * 운영 -> 권한 관리 메뉴 선택
+    * 신규 생성 혹은 수정을 통해 적절한 권한 할당
+
+<br/>
+
+### 에러별 원인
+1. rbac error가 발생하는 경우 (혹은 재택 근무 중 특정 IP에 대해 접근 요청한 경우)
+    * 유저정보허브에서 허용하지 않는 IP 대역에서 접속한 경우로, Istio 정책 변경 필요
+    * columbus-env-deploy 프로젝트의 deploy/istio/security/values-prod.yaml 파일의 ipBlocks에 추가할 아이피 입력
+
+    <img src={ipBlocks} alt="ip-blocks" />
+
+    * deploy/istio가 working directory인 상태에서 아래와 같이 make 명령어 수행
+
+      make install/istio-env/infra-config PROFILE=prod ISTIO_VER=1.8 ISTIO_PATCH_VER=1
+
+      주의 : 현재 kubernetes context와 위의 프로필이 일치하는 상태에서 명령어 수행
+    * 간혹 내부 아이피를 전달해 주는 경우가 있는데 아래와 같이 사전에 파악 가능
+      + 사설 아이피 대역이 정해져 있으므로, 10.x.x.x 172.x.x.x, 192.x.x.x의 아이피 대역을 전달한 경우, 외부 IP를 전달해 달라고 해야 함
+      + icanhazip.com 등 외부 IP를 확인할 수 있는 url을 통해 외부 IP 확인 가능
+
+<br/>
+
+2. [access_denied] User is not assigned to the client application 에러가 발생하는 경우
+    * Okta 어플리케이션에 권한이 없는 경우로, 위에서 설명한 절차와 같이 권한 추가 필요
+
+<br/>
+
+## 블소아시아 프로필 API 지원
+
+블소아시아 프로필 API 지원건에 대해서는 기존의 유저정보허브 도메인이 아니라, 별도의 도메인을 통해 지원을 하고 있음 (HTTP 지원을 위함)
+
+오직 프로필 API만 잘 접근이 되면 됨
+
+원래 사용하는 netmarble.com 도메인과 다르므로 주의
+- Dev존 : http://dev-columbus.nmn.io
+- Prod존 : http://columbus.nmn.io
+
+프로필 API 접근 확인을 위한 curl 명령어
+
+      curl -X POST http://dev-columbus.nmn.io/profiles  -H "Content-Type: application/json" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJtb2RlIjoiQSIsImF1ZCI6InByb2ZpbGUtZGV2LWFwaS5lbmRwb2ludHMubm0tcHJvZC1nbG9iYWwtdXNlcmRhdGEtaHViLmNsb3VkLmdvb2ciLCJzdWIiOiJkYXRhLWFwaUBubS1wcm9kLWdsb2JhbC11c2VyZGF0YS1odWIuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJjdHlwZSI6ImdhbWVfc2VydmVyIiwiaXNzIjoiZGF0YS1hcGlAbm0tcHJvZC1nbG9iYWwtdXNlcmRhdGEtaHViLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiZXhwIjoxOTM1OTc1OTg1LCJpYXQiOjE2MjA2MTU5ODUsImp0aSI6ImJuc21hc2lhIiwiZW1haWwiOiJkYXRhLWFwaUBubS1wcm9kLWdsb2JhbC11c2VyZGF0YS1odWIuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20ifQ.fuQPwAy290OZVn-xJL79SKavCHt4iGWeNOfVNanDpPJre2sdoLsFEwottaW5l4MlTiDcabskWjkOjgywjHHXa3a7tYjNoL49-hSPJCyga8qBMx4A_14YbeAKPVbyJpCoo3m_VOG2qLd3IiEuP8xbVAeD4KCI3eZ08R9ZNfDCUi6aY35G51K2G0oO3ct1nToTHxFmxhuEq-mOlsxwLgWCckf3VPVkW2_kQvFQNlvhhsmc4bPM-FWwScQ4iGX5mnX7aaN_vpEQkkJYLyEV16qlpNsFbKRxq2SINo4_q2_G_Q_msHn6CyK3ZV3qLIRDNz0KFz7Gja9MPeZw8Xp00itqZA" -H "profile-filter: pid=2a8391ff4af44e15b1f675152ea3d97c,gameCode=bnsmasia;"
+
+특정 장비의 IP를 허용해 달라고 할 경우
+1. 마케팅팀에서 설명한바와 같이 columbus-env-deploy 프로젝트를 통해서 허용
+2. 주의사항으로 values.yaml 파일을 수정할 때, ipBlocks가 아니라 bnsmasiaIpBlocks에 아이피를 추가해 줘야 함
+
+    <img src={bnsmasiaIpBlocks} alt="bnsmasia-ip-blocks"/>
+
+접근이 잘 되는지 확인하는 방법
+1. GKE 작업 부하 메뉴 이동
+2. bnsmasia-istio-ingressgateway 의 로그를 확인
+
+    <img src={istioIngressgatewayLog} alt="istio-ingressgateway-log"/>
+
+3. 아예 로그가 발생하지 않는 경우에는 블소아시아 서버 -> 유저정보허브 사이의 방화벽 문제일 가능성이 크므로, 요청이 도착하지 않았으니 확인해보라고 전달
+4. 요청이 도착했는데 403 에러가 발생하는 경우 로그에 있는 아이피(e.g. 위의 캡쳐에서 보이는 211.150.52.97)에 대해 정책 설정해줄 것
+
+액세스 토큰 발급이 필요한 경우
+1. 블소아시아의 경우 토큰 관리의 용이성을 위해 액세스 토큰의 만료일을 10년으로 크게 주고 있는 상황
+2. Admin에서 플랫폼 인증 관리 메뉴 선택
+3. 아래의 클라이언트에 대해 리프레시 토큰 발급 (bnsmasia)
+
+    <img src={platformAuthorization} alt="platform-authorization"/>
+
+4. GET https://dev-columbus.netmarble.com/auth/service/token API 호출하여 액세스 토큰 발급 (Bearer에 리프레시 토큰 설정 필요)
+
+    <img src={accessToken} alt="access-token"/>
+
+5. 발급된 액세스 토큰 전달

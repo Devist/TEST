@@ -1,0 +1,9 @@
+{
+  "baseUrl": "http://localhost:5015/dashboard/home",
+  "integrationFolder": "test/integration",
+  "fixturesFolder": "test/fixtures",
+  "supportFile": "test/support/index.js",
+  "pluginsFile": "test/plugins/index.js",
+  "screenshotsFolder": "test/screenshots",
+  "videosFolder": "test/videos"
+}
